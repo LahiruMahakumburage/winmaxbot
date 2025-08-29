@@ -95,25 +95,120 @@ async def forward_messages(event):
 # =================== BOT COMMANDS ===================
 @bot.on(events.NewMessage(pattern='/start'))
 async def start_command(event):
-    await event.reply("👋 Hello! I am your WinMaxBot.\nUse /help to see commands.")
+    await event.reply(
+        "👋 Hello! I am your WinMaxBot.\n"
+        "I forward messages from source groups to destination groups.\n"
+        "Use /help to see commands."
+    )
+
 
 @bot.on(events.NewMessage(pattern='/help'))
 async def help_command(event):
     await event.reply(
-        "📌 Commands:\n"
-        "/start\n/help\n/about\n"
-        "/setfooter <text>\n/togglefooter\n"
-        "/adddestination <chat_id>\n/removedestination <chat_id>\n"
-        "/addsource <chat_id>\n/removesource <chat_id>\n"
-        "/listsources"
+        "📌 **WinMaxBot Commands:**\n"
+        "/start - Start the bot\n"
+        "/help - Show commands\n"
+        "/about - Bot info\n"
+        "/setfooter <text> - Change footer text\n"
+        "/togglefooter - Enable/Disable footer\n"
+        "/adddestination <chat_id> - Add destination\n"
+        "/removedestination <chat_id> - Remove destination\n"
+        "/addsource <chat_id> - Add source\n"
+        "/removesource <chat_id> - Remove source\n"
+        "/listsources - Show sources & destinations"
     )
+
 
 @bot.on(events.NewMessage(pattern='/about'))
 async def about_command(event):
     await event.reply("WinMaxBot v1.0\nDeveloped by Lahiru Mahakumburage\nFrom Future World Solution")
 
-# Footer & source/destination commands (same as your original code)...
-# [You can copy all commands from your original code here]
+
+# =================== FOOTER COMMANDS ===================
+@bot.on(events.NewMessage(pattern='/setfooter'))
+async def set_footer(event):
+    global footer_text
+    new_footer = event.message.message.replace("/setfooter", "").strip()
+    if new_footer:
+        footer_text = f"\n\n{new_footer}"
+        await event.reply(f"✅ Footer updated:\n{footer_text.strip()}")
+    else:
+        await event.reply("⚠️ Usage: /setfooter Your footer text")
+
+
+@bot.on(events.NewMessage(pattern='/togglefooter'))
+async def toggle_footer(event):
+    global footer_enabled
+    footer_enabled = not footer_enabled
+    status = "enabled ✅" if footer_enabled else "disabled ❌"
+    await event.reply(f"Footer is now {status}")
+
+
+# =================== DESTINATION COMMANDS ===================
+@bot.on(events.NewMessage(pattern='/adddestination'))
+async def add_destination(event):
+    global destination_groups
+    try:
+        new_dest = int(event.message.message.replace("/adddestination", "").strip())
+        if new_dest not in destination_groups:
+            destination_groups.append(new_dest)
+            await event.reply(f"✅ Destination added: {new_dest}")
+        else:
+            await event.reply("⚠️ Already in list.")
+    except:
+        await event.reply("⚠️ Usage: /adddestination <chat_id>")
+
+
+@bot.on(events.NewMessage(pattern='/removedestination'))
+async def remove_destination(event):
+    global destination_groups
+    try:
+        rem_dest = int(event.message.message.replace("/removedestination", "").strip())
+        if rem_dest in destination_groups:
+            destination_groups.remove(rem_dest)
+            await event.reply(f"✅ Destination removed: {rem_dest}")
+        else:
+            await event.reply("⚠️ Not in list.")
+    except:
+        await event.reply("⚠️ Usage: /removedestination <chat_id>")
+
+
+# =================== SOURCE COMMANDS ===================
+@bot.on(events.NewMessage(pattern='/addsource'))
+async def add_source(event):
+    global source_groups
+    try:
+        new_source = int(event.message.message.replace("/addsource", "").strip())
+        if new_source not in source_groups:
+            source_groups.append(new_source)
+            await event.reply(f"✅ Source added: {new_source}")
+        else:
+            await event.reply("⚠️ Already in list.")
+    except:
+        await event.reply("⚠️ Usage: /addsource <chat_id>")
+
+
+@bot.on(events.NewMessage(pattern='/removesource'))
+async def remove_source(event):
+    global source_groups
+    try:
+        rem_source = int(event.message.message.replace("/removesource", "").strip())
+        if rem_source in source_groups:
+            source_groups.remove(rem_source)
+            await event.reply(f"✅ Source removed: {rem_source}")
+        else:
+            await event.reply("⚠️ Not in list.")
+    except:
+        await event.reply("⚠️ Usage: /removesource <chat_id>")
+
+
+# =================== LIST SOURCES ===================
+@bot.on(events.NewMessage(pattern='/listsources'))
+async def list_sources(event):
+    await event.reply(
+        f"📌 Sources:\n{source_groups}\n\n"
+        f"📌 Destinations:\n{destination_groups}\n"
+    )
 
 print("WinMaxBot running... Forwarding messages now!")
 client.run_until_disconnected()
