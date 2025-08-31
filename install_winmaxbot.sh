@@ -51,10 +51,9 @@ api_id = int(os.environ.get("API_ID", "0"))
 api_hash = os.environ.get("API_HASH", "")
 bot_token = os.environ.get("BOT_TOKEN", "")
 
-destination_groups = [-1003045034143]
+destination_groups = [-1003045034143,-1003066964851,-1002944391131]
 source_groups = [
-    -1002860677525, -1003022572344, -1002974728259,
-    -1002919434260, -1002828051510, -1003005335315, -1003016603654
+    -1002860677525, -1002376878955
 ]
 
 footer_text = "\n\nOffered by Gold Hunter VIP"
@@ -121,7 +120,7 @@ async def help_command(event):
 
 @bot.on(events.NewMessage(pattern='/about'))
 async def about_command(event):
-    await event.reply("WinMaxBot v1.0\nDeveloped by Lahiru Mahakumburage\nFrom Future World Solution")
+    await event.reply("WinMaxBot v1.0\nDeveloped by Lahiru Mahakumburage ")
 
 
 # =================== FOOTER COMMANDS ===================
