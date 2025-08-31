@@ -4,7 +4,7 @@ set -e
 # ================= CONFIG =================
 BOT_USER="botuser"
 BOT_DIR="/home/$BOT_USER/winmaxbot"
-BOT_FILE="WinMax.py"
+BOT_FILE="bot.py"
 SERVICE_NAME="winmaxbot"
 PYTHON_BIN="$BOT_DIR/venv/bin/python"
 
@@ -42,7 +42,7 @@ BOT_TOKEN=$BOT_TOKEN
 EOL
 sudo chmod 600 /etc/$SERVICE_NAME.env
 
-echo "=== 5. Writing WinMax.py code ==="
+echo "=== 5. Writing bot.py code ==="
 sudo tee $BOT_DIR/$BOT_FILE > /dev/null <<'EOL'
 import os
 from telethon import TelegramClient, events
