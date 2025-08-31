@@ -4,7 +4,7 @@ set -e
 # ================= CONFIG =================
 BOT_USER="botuser"
 BOT_DIR="/home/$BOT_USER/winmaxbot"
-BOT_FILE="bot.py"
+BOT_FILE="WinMax.py"
 SERVICE_NAME="winmaxbot"
 PYTHON_BIN="$BOT_DIR/venv/bin/python"
 
@@ -42,7 +42,7 @@ BOT_TOKEN=$BOT_TOKEN
 EOL
 sudo chmod 600 /etc/$SERVICE_NAME.env
 
-echo "=== 5. Writing bot.py code ==="
+echo "=== 5. Writing WinMax.py code ==="
 sudo tee $BOT_DIR/$BOT_FILE > /dev/null <<'EOL'
 import os
 from telethon import TelegramClient, events
@@ -110,10 +110,10 @@ async def help_command(event):
         "/about - Bot info\n"
         "/setfooter <text> - Change footer text\n"
         "/togglefooter - Enable/Disable footer\n"
-        "/adddestination <chat_id> - Add destination\n"
-        "/removedestination <chat_id> - Remove destination\n"
-        "/addsource <chat_id> - Add source\n"
-        "/removesource <chat_id> - Remove source\n"
+        #"/adddestination <chat_id> - Add destination\n"
+        #"/removedestination <chat_id> - Remove destination\n"
+        #"/addsource <chat_id> - Add source\n"
+        #"/removesource <chat_id> - Remove source\n"
         "/listsources - Show sources & destinations"
     )
 
@@ -144,61 +144,61 @@ async def toggle_footer(event):
 
 
 # =================== DESTINATION COMMANDS ===================
-@bot.on(events.NewMessage(pattern='/adddestination'))
-async def add_destination(event):
-    global destination_groups
-    try:
-        new_dest = int(event.message.message.replace("/adddestination", "").strip())
-        if new_dest not in destination_groups:
-            destination_groups.append(new_dest)
-            await event.reply(f"✅ Destination added: {new_dest}")
-        else:
-            await event.reply("⚠️ Already in list.")
-    except:
-        await event.reply("⚠️ Usage: /adddestination <chat_id>")
+#@bot.on(events.NewMessage(pattern='/adddestination'))
+#async def add_destination(event):
+    #global destination_groups
+    #try:
+        #new_dest = int(event.message.message.replace("/adddestination", "").strip())
+        #if new_dest not in destination_groups:
+            #destination_groups.append(new_dest)
+            #await event.reply(f"✅ Destination added: {new_dest}")
+        #else:
+            #await event.reply("⚠️ Already in list.")
+    #except:
+        #await event.reply("⚠️ Usage: /adddestination <chat_id>")
 
 
-@bot.on(events.NewMessage(pattern='/removedestination'))
-async def remove_destination(event):
-    global destination_groups
-    try:
-        rem_dest = int(event.message.message.replace("/removedestination", "").strip())
-        if rem_dest in destination_groups:
-            destination_groups.remove(rem_dest)
-            await event.reply(f"✅ Destination removed: {rem_dest}")
-        else:
-            await event.reply("⚠️ Not in list.")
-    except:
-        await event.reply("⚠️ Usage: /removedestination <chat_id>")
+#@bot.on(events.NewMessage(pattern='/removedestination'))
+#async def remove_destination(event):
+    #global destination_groups
+    #try:
+        #rem_dest = int(event.message.message.replace("/removedestination", "").strip())
+        #if rem_dest in destination_groups:
+            #destination_groups.remove(rem_dest)
+            #await event.reply(f"✅ Destination removed: {rem_dest}")
+        #else:
+            #await event.reply("⚠️ Not in list.")
+    #except:
+        #await event.reply("⚠️ Usage: /removedestination <chat_id>")
 
 
 # =================== SOURCE COMMANDS ===================
-@bot.on(events.NewMessage(pattern='/addsource'))
-async def add_source(event):
-    global source_groups
-    try:
-        new_source = int(event.message.message.replace("/addsource", "").strip())
-        if new_source not in source_groups:
-            source_groups.append(new_source)
-            await event.reply(f"✅ Source added: {new_source}")
-        else:
-            await event.reply("⚠️ Already in list.")
-    except:
-        await event.reply("⚠️ Usage: /addsource <chat_id>")
+#@bot.on(events.NewMessage(pattern='/addsource'))
+#async def add_source(event):
+    #global source_groups
+    #try:
+        #new_source = int(event.message.message.replace("/addsource", "").strip())
+        #if new_source not in source_groups:
+            #source_groups.append(new_source)
+            #await event.reply(f"✅ Source added: {new_source}")
+        #else:
+            #await event.reply("⚠️ Already in list.")
+    #except:
+        #await event.reply("⚠️ Usage: /addsource <chat_id>")
 
 
-@bot.on(events.NewMessage(pattern='/removesource'))
-async def remove_source(event):
-    global source_groups
-    try:
-        rem_source = int(event.message.message.replace("/removesource", "").strip())
-        if rem_source in source_groups:
-            source_groups.remove(rem_source)
-            await event.reply(f"✅ Source removed: {rem_source}")
-        else:
-            await event.reply("⚠️ Not in list.")
-    except:
-        await event.reply("⚠️ Usage: /removesource <chat_id>")
+#@bot.on(events.NewMessage(pattern='/removesource'))
+#async def remove_source(event):
+    #global source_groups
+    #try:
+        #rem_source = int(event.message.message.replace("/removesource", "").strip())
+        #if rem_source in source_groups:
+            #source_groups.remove(rem_source)
+            #await event.reply(f"✅ Source removed: {rem_source}")
+        #else:
+            #await event.reply("⚠️ Not in list.")
+    #except:
+        #await event.reply("⚠️ Usage: /removesource <chat_id>")
 
 
 # =================== LIST SOURCES ===================
